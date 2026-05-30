@@ -1,0 +1,1107 @@
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SORENA</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Vazirmatn:wght@300;500;700&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Vazirmatn',sans-serif;
+cursor:none;
+}
+
+body{
+background:#050505;
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+}
+
+/* BACKGROUND */
+
+.bg{
+position:fixed;
+inset:0;
+overflow:hidden;
+z-index:-1;
+}
+
+.line{
+position:absolute;
+width:3px;
+height:160px;
+background:linear-gradient(transparent,#ffea00);
+transform:rotate(45deg);
+animation:meteor 5s linear infinite;
+opacity:0.7;
+}
+
+@keyframes meteor{
+0%{
+transform:translate(-300px,-300px) rotate(45deg);
+opacity:0;
+}
+10%{opacity:1;}
+100%{
+transform:translate(1800px,1200px) rotate(45deg);
+opacity:0;
+}
+}
+
+/* CURSOR */
+
+.cursor{
+width:28px;
+height:28px;
+border:2px solid #ffea00;
+border-radius:50%;
+position:fixed;
+pointer-events:none;
+z-index:9999;
+transition:0.1s;
+box-shadow:0 0 20px red;
+}
+
+.cursor.active{
+transform:scale(0.5);
+background:red;
+}
+
+/* HEADER */
+
+header{
+padding:40px;
+text-align:center;
+}
+
+header h1{
+font-size:75px;
+font-family:'Orbitron';
+color:#ffea00;
+text-shadow:
+0 0 10px #ffea00,
+0 0 30px red,
+0 0 60px red;
+letter-spacing:8px;
+}
+
+header p{
+margin-top:10px;
+font-size:20px;
+color:#ff8c00;
+}
+
+/* CARDS */
+
+.container{
+width:95%;
+margin:auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+padding-bottom:80px;
+}
+
+.card{
+height:230px;
+border-radius:25px;
+background:rgba(255,255,255,0.04);
+border:2px solid rgba(255,255,0,0.2);
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+font-size:25px;
+font-weight:bold;
+position:relative;
+overflow:hidden;
+transition:0.4s;
+backdrop-filter:blur(10px);
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:
+0 0 25px red,
+0 0 50px #ffea00;
+border-color:#ffea00;
+}
+
+.card::before{
+content:'';
+position:absolute;
+width:200%;
+height:200%;
+background:linear-gradient(
+45deg,
+transparent,
+rgba(255,255,0,0.1),
+transparent
+);
+animation:rotate 5s linear infinite;
+}
+
+@keyframes rotate{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+.card span{
+position:relative;
+z-index:2;
+}
+
+/* MODAL */
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.95);
+display:none;
+align-items:center;
+justify-content:center;
+padding:25px;
+z-index:999;
+}
+
+.modal-content{
+width:95%;
+max-width:1100px;
+max-height:90vh;
+overflow:auto;
+background:#111;
+border:2px solid #ffea00;
+border-radius:25px;
+padding:30px;
+position:relative;
+box-shadow:0 0 30px red;
+}
+
+.close{
+position:absolute;
+top:15px;
+left:15px;
+background:red;
+border:none;
+color:white;
+padding:10px 15px;
+border-radius:10px;
+font-size:18px;
+}
+
+.start{
+margin-top:25px;
+padding:15px 35px;
+border:none;
+background:linear-gradient(45deg,red,#ffea00);
+font-size:22px;
+font-weight:bold;
+border-radius:15px;
+}
+
+/* SECTION */
+
+.section{
+margin-top:30px;
+padding:25px;
+background:rgba(255,255,255,0.03);
+border-radius:20px;
+border:1px solid rgba(255,255,0,0.2);
+}
+
+.section h2{
+margin-bottom:20px;
+color:#ffea00;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:14px;
+margin-top:12px;
+background:#111;
+border:1px solid #ffea00;
+border-radius:12px;
+color:white;
+}
+
+button.save{
+margin-top:15px;
+padding:12px 25px;
+border:none;
+border-radius:12px;
+background:#ffea00;
+font-weight:bold;
+font-size:18px;
+}
+
+.saved{
+margin-top:20px;
+overflow:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table th,
+table td{
+border:1px solid #ffea00;
+padding:12px;
+text-align:center;
+}
+
+table th{
+background:red;
+}
+
+/* WHEEL */
+
+#wheel{
+width:320px;
+height:320px;
+border-radius:50%;
+margin:auto;
+margin-top:25px;
+border:10px solid white;
+transition:5s cubic-bezier(.17,.67,.21,1);
+}
+
+.pointer{
+width:0;
+height:0;
+border-left:20px solid transparent;
+border-right:20px solid transparent;
+border-top:40px solid yellow;
+margin:auto;
+}
+
+.spin{
+margin-top:20px;
+padding:15px 30px;
+background:red;
+border:none;
+color:white;
+font-size:20px;
+border-radius:15px;
+display:block;
+margin-inline:auto;
+}
+
+.result{
+text-align:center;
+margin-top:20px;
+font-size:25px;
+}
+
+/* MOTIVATION */
+
+.motivation{
+position:fixed;
+font-size:14px;
+opacity:0.08;
+color:#ffea00;
+animation:float 18s linear infinite;
+pointer-events:none;
+}
+
+@keyframes float{
+0%{
+transform:translateY(100vh);
+}
+100%{
+transform:translateY(-100vh);
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg" id="bg"></div>
+
+<div class="cursor"></div>
+
+<header>
+<h1>SORENA</h1>
+<p>NEON HACKER LIFE SYSTEM</p>
+</header>
+
+<div class="container" id="cards"></div>
+
+<div class="modal" id="modal">
+
+<div class="modal-content">
+
+<button class="close" onclick="closeModal()">✖</button>
+
+<div id="modalBody"></div>
+
+</div>
+
+</div>
+
+<script>
+
+/* DATA */
+
+const sections=[
+
+{
+title:"1. Money Management",
+desc:"سورنا ( ایلان ماسک ) ، در اینجا پول خود را مدیریت کن"
+},
+
+{
+title:"2. Food / Calorie",
+desc:"در اینجا کالری غذاهایی که میخوری رو مدیریت کن"
+},
+
+{
+title:"3. AI Assistant",
+desc:"با من مشورت کن 😔"
+},
+
+{
+title:"4. Notebook",
+desc:"دفتر یادداشت سورنا"
+},
+
+{
+title:"5. Discipline",
+desc:"دیسیپلین خودت رو بساز"
+},
+
+{
+title:"6. Girl Friends",
+desc:"به ویترین دخترا سر بزن"
+},
+
+{
+title:"7. Favorite Music",
+desc:"آهنگ های مورد علاقت"
+},
+
+{
+title:"8. Vitto Parsa",
+desc:"ویتو پارسا یادت نره"
+},
+
+{
+title:"9. My Best Styles",
+desc:"استایل های خفن"
+},
+
+{
+title:"10. My Dreams",
+desc:"آرزو هایی که باید برسی"
+},
+
+{
+title:"11. GYM",
+desc:"رکورد های باشگاه"
+},
+
+{
+title:"12. Sleep Management",
+desc:"خواب بچه دوساله"
+}
+
+];
+
+/* CREATE CARDS */
+
+const cards=document.getElementById('cards');
+
+sections.forEach((s,i)=>{
+
+cards.innerHTML+=`
+<div class="card" onclick="openModal(${i+1})">
+<span>${s.title}</span>
+</div>
+`;
+
+});
+
+/* CURSOR */
+
+const cursor=document.querySelector('.cursor');
+
+document.addEventListener('mousemove',e=>{
+
+cursor.style.left=e.clientX+'px';
+cursor.style.top=e.clientY+'px';
+
+});
+
+document.querySelectorAll('button,.card,input,textarea,select').forEach(el=>{
+
+el.addEventListener('mouseenter',()=>{
+cursor.classList.add('active');
+});
+
+el.addEventListener('mouseleave',()=>{
+cursor.classList.remove('active');
+});
+
+});
+
+/* BACKGROUND */
+
+const bg=document.getElementById('bg');
+
+for(let i=0;i<35;i++){
+
+let l=document.createElement('div');
+
+l.className='line';
+
+l.style.left=Math.random()*100+'%';
+l.style.top=Math.random()*100+'%';
+l.style.animationDelay=Math.random()*5+'s';
+
+bg.appendChild(l);
+
+}
+
+/* MOTIVATION */
+
+const texts=[
+"تو قوی میشی",
+"هیچکس حریف تو نیست",
+"دیسیپلین = قدرت",
+"سورنا بیداره",
+"هیولا شو",
+"امروز نابود کن",
+"تمرکز",
+"تو میتونی"
+];
+
+for(let i=0;i<40;i++){
+
+let t=document.createElement('div');
+
+t.className='motivation';
+
+t.innerText=texts[Math.floor(Math.random()*texts.length)];
+
+t.style.left=Math.random()*100+'%';
+
+t.style.animationDuration=(10+Math.random()*20)+'s';
+
+document.body.appendChild(t);
+
+}
+
+/* MODAL */
+
+function openModal(id){
+
+document.getElementById('modal').style.display='flex';
+
+const body=document.getElementById('modalBody');
+
+body.innerHTML=`
+
+<h1>${sections[id-1].title}</h1>
+
+<p style="margin-top:20px;font-size:22px;">
+${sections[id-1].desc}
+</p>
+
+<button class="start" onclick="startSection(${id})">
+شروع کن پسر
+</button>
+
+`;
+
+}
+
+function closeModal(){
+
+document.getElementById('modal').style.display='none';
+
+}
+
+/* START SECTION */
+
+function startSection(id){
+
+const body=document.getElementById('modalBody');
+
+/* 1 */
+
+if(id===1){
+
+body.innerHTML=`
+
+<h1>💰 مدیریت مالی</h1>
+
+<div class="section">
+
+<h2>ثبت اطلاعات مالی</h2>
+
+<input id="moneyInput" placeholder="موجودی / بدهی / طلب / خرج آینده">
+
+<button class="save" onclick="saveData('moneyInput','moneyTable')">
+سیو
+</button>
+
+<div class="saved" id="moneyTable"></div>
+
+</div>
+
+`;
+
+loadTable('moneyTable','moneyInput');
+
+}
+
+/* 2 */
+
+if(id===2){
+
+body.innerHTML=`
+
+<h1>🍔 مدیریت غذا</h1>
+
+<div class="section">
+
+<h2>امروز چی خوردی ؟</h2>
+
+<textarea id="foodInput"></textarea>
+
+<button class="save" onclick="saveData('foodInput','foodTable')">
+ثبت
+</button>
+
+<div class="saved" id="foodTable"></div>
+
+</div>
+
+`;
+
+loadTable('foodTable','foodInput');
+
+}
+
+/* 3 */
+
+if(id===3){
+
+body.innerHTML=`
+
+<h1>🤖 AI Assistant</h1>
+
+<div class="section">
+
+<a href="https://chatgpt.com/" target="_blank">
+
+<button class="start">
+ورود به AI 😎
+</button>
+
+</a>
+
+</div>
+
+`;
+
+}
+
+/* 4 */
+
+if(id===4){
+
+body.innerHTML=`
+
+<h1>📓 دفتر غم ها</h1>
+
+<div class="section">
+
+<textarea id="noteInput"
+placeholder="غم هاتو بنویس"></textarea>
+
+<input id="solveInput"
+placeholder="راهکار حل مشکل">
+
+<button class="save" onclick="saveDouble()">
+ثبت
+</button>
+
+<div class="saved" id="noteTable"></div>
+
+</div>
+
+`;
+
+loadDouble();
+
+}
+
+/* 5 */
+
+if(id===5){
+
+body.innerHTML=`
+
+<h1>🔥 Discipline</h1>
+
+<div class="section">
+
+<input id="habitInput"
+placeholder="عادت">
+
+<select id="level">
+<option>A</option>
+<option>B</option>
+<option>C</option>
+</select>
+
+<button class="save" onclick="saveHabit()">
+ثبت
+</button>
+
+<div class="saved" id="habitTable"></div>
+
+</div>
+
+<div class="pointer"></div>
+
+<div id="wheel"></div>
+
+<button class="spin" onclick="spinWheel()">
+گردونه مجازات
+</button>
+
+<div class="result" id="result"></div>
+
+`;
+
+createWheel();
+
+loadHabit();
+
+}
+
+/* 6 */
+
+if(id===6){
+
+body.innerHTML=`
+
+<h1>👑 Girl Friends</h1>
+
+<div class="section">
+
+<table>
+
+<tr>
+<th>نام</th>
+<th>شماره</th>
+<th>آیدی</th>
+<th>تولد</th>
+<th>عادت</th>
+</tr>
+
+<tr>
+<td><input></td>
+<td><input></td>
+<td><input></td>
+<td><input></td>
+<td><input></td>
+</tr>
+
+</table>
+
+<button class="save">
+ثبت اطلاعات
+</button>
+
+</div>
+
+`;
+
+}
+
+/* 7 */
+
+if(id===7){
+
+body.innerHTML=`
+
+<h1>🎵 Favorite Music</h1>
+
+<div class="section">
+
+<h2>حال خوب</h2>
+
+<textarea placeholder="نام آهنگ ها"></textarea>
+
+<h2>حال بد</h2>
+
+<textarea placeholder="نام آهنگ ها"></textarea>
+
+<button class="save">
+ثبت موزیک ها
+</button>
+
+</div>
+
+`;
+
+}
+
+/* 8 */
+
+if(id===8){
+
+body.innerHTML=`
+
+<h1>🔥 Vitto Parsa</h1>
+
+<div class="section">
+
+<a href="https://www.youtube.com/@Vittoparsa" target="_blank">
+
+<button class="start">
+ورود به کانال 😎
+</button>
+
+</a>
+
+</div>
+
+`;
+
+}
+
+/* 9 */
+
+if(id===9){
+
+body.innerHTML=`
+
+<h1>👕 My Styles</h1>
+
+<div class="section">
+
+<input placeholder="کلاه">
+<input placeholder="تیشرت">
+<input placeholder="شلوار">
+<input placeholder="جوراب">
+
+<button class="save">
+ثبت استایل
+</button>
+
+</div>
+
+`;
+
+}
+
+/* 10 */
+
+if(id===10){
+
+body.innerHTML=`
+
+<h1>🌌 My Dreams</h1>
+
+<div class="section">
+
+<textarea placeholder="آرزو های من"></textarea>
+
+<button class="save">
+ثبت آرزو
+</button>
+
+</div>
+
+`;
+
+}
+
+/* 11 */
+
+if(id===11){
+
+body.innerHTML=`
+
+<h1>🏋️ GYM</h1>
+
+<div class="section">
+
+<input placeholder="نام دستگاه">
+
+<input placeholder="رکورد">
+
+<button class="save">
+ثبت رکورد
+</button>
+
+</div>
+
+`;
+
+}
+
+/* 12 */
+
+if(id===12){
+
+body.innerHTML=`
+
+<h1>😴 Sleep Management</h1>
+
+<div class="section">
+
+<label>از ساعت</label>
+<input type="time" id="sleep1">
+
+<label>تا ساعت</label>
+<input type="time" id="sleep2">
+
+<button class="save" onclick="calcSleep()">
+محاسبه خواب
+</button>
+
+<div class="saved" id="sleepResult"></div>
+
+</div>
+
+`;
+
+}
+
+}
+
+/* SAVE SIMPLE */
+
+function saveData(inputId,tableId){
+
+let val=document.getElementById(inputId).value;
+
+let data=JSON.parse(localStorage.getItem(tableId)||'[]');
+
+data.push(val);
+
+localStorage.setItem(tableId,JSON.stringify(data));
+
+loadTable(tableId,inputId);
+
+}
+
+/* LOAD TABLE */
+
+function loadTable(tableId){
+
+let data=JSON.parse(localStorage.getItem(tableId)||'[]');
+
+let html='<table><tr><th>داده ها</th></tr>';
+
+data.forEach(d=>{
+
+html+=`<tr><td>${d}</td></tr>`;
+
+});
+
+html+='</table>';
+
+document.getElementById(tableId).innerHTML=html;
+
+}
+
+/* DOUBLE */
+
+function saveDouble(){
+
+let note=document.getElementById('noteInput').value;
+
+let solve=document.getElementById('solveInput').value;
+
+let data=JSON.parse(localStorage.getItem('noteData')||'[]');
+
+data.push({note,solve});
+
+localStorage.setItem('noteData',JSON.stringify(data));
+
+loadDouble();
+
+}
+
+function loadDouble(){
+
+let data=JSON.parse(localStorage.getItem('noteData')||'[]');
+
+let html='<table><tr><th>غم</th><th>راهکار</th></tr>';
+
+data.forEach(d=>{
+
+html+=`
+<tr>
+<td>${d.note}</td>
+<td>${d.solve}</td>
+</tr>
+`;
+
+});
+
+html+='</table>';
+
+document.getElementById('noteTable').innerHTML=html;
+
+}
+
+/* HABIT */
+
+function saveHabit(){
+
+let habit=document.getElementById('habitInput').value;
+
+let level=document.getElementById('level').value;
+
+let data=JSON.parse(localStorage.getItem('habitData')||'[]');
+
+data.push({habit,level});
+
+localStorage.setItem('habitData',JSON.stringify(data));
+
+alert('آفرین سینای با دیسیپلین 🔥');
+
+loadHabit();
+
+}
+
+function loadHabit(){
+
+let data=JSON.parse(localStorage.getItem('habitData')||'[]');
+
+let html='<table><tr><th>عادت</th><th>سطح</th></tr>';
+
+data.forEach(d=>{
+
+html+=`
+<tr>
+<td>${d.habit}</td>
+<td>${d.level}</td>
+</tr>
+`;
+
+});
+
+html+='</table>';
+
+document.getElementById('habitTable').innerHTML=html;
+
+}
+
+/* WHEEL */
+
+const punishments=[
+'200 اسکات',
+'200 شنا',
+'200 دراز نشست',
+'250 تا از همه',
+'3 عادت جدید',
+'2 ساعت درس',
+'فردا گوشی ممنوع',
+'پوچ 😎'
+];
+
+function createWheel(){
+
+document.getElementById('wheel').style.background=`
+conic-gradient(
+red 0deg 45deg,
+yellow 45deg 90deg,
+orange 90deg 135deg,
+red 135deg 180deg,
+yellow 180deg 225deg,
+orange 225deg 270deg,
+red 270deg 315deg,
+yellow 315deg 360deg
+)
+`;
+
+}
+
+let deg=0;
+
+function spinWheel(){
+
+deg+=Math.floor(Math.random()*5000)+3000;
+
+document.getElementById('wheel').style.transform=
+`rotate(${deg}deg)`;
+
+setTimeout(()=>{
+
+let result=Math.floor((deg%360)/45);
+
+document.getElementById('result').innerHTML=
+punishments[7-result];
+
+},5000);
+
+}
+
+/* SLEEP */
+
+function calcSleep(){
+
+let a=document.getElementById('sleep1').value;
+
+let b=document.getElementById('sleep2').value;
+
+if(!a||!b)return;
+
+let s1=parseInt(a.split(':')[0]);
+let s2=parseInt(b.split(':')[0]);
+
+let diff=s2-s1;
+
+if(diff<0) diff+=24;
+
+let text=`${diff} ساعت خوابیدی`;
+
+if(diff<6){
+
+text+=' 😵 ای وای کم خوابیدی';
+
+}
+
+else if(diff>8){
+
+text+=' 😂 مرتیکه تنبل';
+
+}
+
+else{
+
+text+=' 😎 عالیه';
+
+}
+
+document.getElementById('sleepResult').innerHTML=text;
+
+}
+
+</script>
+
+</body>
+</html>
+```
